@@ -1,0 +1,52 @@
+[
+    {
+        "name": "Hello",
+        "type": "wifi",
+        "class": "ScanFileTask",
+        "match_params": [
+            {
+                "key": "模块",
+                "value": "WLAN"
+            }
+        ],
+        "log_files": [
+            {
+                "class": "FileTask",
+                "name": "**/*.txt",
+                "tools":[
+                    {
+                        "name": "normal",
+                        "params": [
+                            "freq:(.*), protocol:.*, .*router:(.*), totalTC",
+                            "default network switch to slave wifi close all sockets",
+                            "NetworkDiagnostics.*TYPE=G",
+                            "NetworkDiagnostics:.*ret=false",
+                            "NetworkDiagnostics:.*FAILED",
+                            "NetworkDiagnostics: Network diagnostics start",
+                            " NetworkDiagnostics:",
+                            "time=.*event=abnormaltrx",
+                            "mStaticIpConfig: IP address"
+                        ]
+                    }
+                ]
+            },
+            {
+                "class": "FileTask",
+                "name": "**/*kernel_log_*",
+                "tools":[
+                    {
+                        "name": "normal",
+                        "params": [
+                            "data stall: abnormaltrx=DIR:TX,Event:Hang",
+                            "data stall: abnormaltrx=DIR:TX,event:AbDrop",
+                            "data stall: abnormaltrx=DIR:TXRX,event:BTWifiCoexLow",
+                            "data stall: abnormaltrx=DIR:TX,event:AbRate",
+                            "data stall: abnormaltrx",
+                            "halIsTxHang:.*timeout\\[sec:([0-9]*)\\]"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
